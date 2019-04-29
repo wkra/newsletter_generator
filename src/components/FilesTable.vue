@@ -7,7 +7,7 @@
             hide-actions
     >
         <template v-slot:items="props">
-            <td class="text-xs-left"> {{ props.index + 1 }}</td>
+            <td class="text-xxs-left"> {{ props.index + 1 }}</td>
             <td>{{ props.item.name }}</td>
             <td>
                 <v-edit-dialog
@@ -75,7 +75,8 @@
                         text: 'Index',
                         align: 'left',
                         sortable: false,
-                        value: 'index'
+                        value: 'index',
+                        width: '10px'
                     },
                     {
                         text: 'File name',
