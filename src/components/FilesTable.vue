@@ -38,14 +38,14 @@
             <td class="text-xs-center">
                 <v-btn flat icon color="blue lighten-2" round :disabled="props.index === items.length - 1" small
                        @click="move(props.index, props.index + 1)">
-                    <v-icon>thumb_down</v-icon>
+                    <v-icon>arrow_downward</v-icon>
                 </v-btn>
                 <v-btn flat icon color="green lighten-2" round :disabled="props.index === 0" small
                        @click="move(props.index, props.index - 1)">
-                    <v-icon>thumb_up</v-icon>
+                    <v-icon>arrow_upward</v-icon>
                 </v-btn>
                 <v-btn flat icon color="red lighten-2" round small @click="removeFile(props.index)">
-                    <v-icon>remove_circle</v-icon>
+                    <v-icon>close</v-icon>
                 </v-btn>
             </td>
         </template>
