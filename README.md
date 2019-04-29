@@ -1,4 +1,5 @@
 # newsletter_generator
+<a href="https://wkra.github.io/newsletter_generator/">DEMO</a>
 
 ## Project setup
 ```
@@ -15,15 +16,8 @@ npm run serve
 npm run build
 ```
 
-### Run your tests
+### github pages update
 ```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
+git subtree push --prefix dist origin gh-pages
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
