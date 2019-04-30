@@ -123,6 +123,12 @@ export default {
     },
     move({ currIndex, newIndex }) {
       var arr = this.imgs;
+      if (newIndex > arr.length - 1) {
+        newIndex = 0;
+      }
+      if (newIndex < 0) {
+        newIndex = arr.length - 1;
+      }
       arr.splice(newIndex, 0, arr.splice(currIndex, 1)[0]);
       this.updateCode();
     },
