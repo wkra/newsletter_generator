@@ -49,7 +49,7 @@ export default {
       templateHeader:
         '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">',
       name: "Template 1",
-      description: "Images 600ps width, in the same folder as index.html."
+      description: "Images 600px width, in the same folder as index.html."
     };
   },
   created() {
