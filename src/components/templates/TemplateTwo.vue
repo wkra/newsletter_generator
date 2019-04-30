@@ -1,5 +1,5 @@
 <template>
-<html>
+<html v-if="active">
   <head>
     <title>Template 2</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -42,8 +42,21 @@
 export default {
   name: "TemplateTwo",
   props: {
-    imgs: Array
+    imgs: Array,
+    active: Boolean
   },
-  created() {}
+  data: function() {
+    return {
+      name: "Template 2",
+      description: "description 0 width"
+    };
+  },
+  created() {
+    this.$emit("newTemplate", {
+      templateHeader: this.templateHeader,
+      name: this.name,
+      description: this.description
+    });
+  }
 };
 </script>

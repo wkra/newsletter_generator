@@ -4,6 +4,7 @@
       <Toolbar/>
       <v-content>
         <HeaderTable
+          v-if="templates.length"
           :imgsLength="imgs.length"
           :templates="templates"
           v-model="selectedTemplate"
@@ -19,6 +20,7 @@
           v-show="showTemplate"
           :imgs="imgs"
           :selectedTemplate="selectedTemplate"
+          @newTemplate="newTemplate"
         />
       </v-container>
       <Code v-if="showTemplate" :code="code" :header="templateHeader" @copyCode="copyCode"/>
@@ -54,13 +56,7 @@ export default {
       code: "",
       defaultTemplateheader:
         '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">',
-      templates: [
-        {
-          name: "Template 1",
-          description: "Photo 600px width, images in same folder."
-        },
-        { name: "Template 2", description: "description 000px width" }
-      ],
+      templates: [],
       selectedTemplate: {},
       initCopy: false
     };
@@ -70,9 +66,9 @@ export default {
       return this.imgs.length;
     },
     templateHeader() {
-      return typeof this.selectedTemplate.header === undefined
+      return typeof this.selectedTemplate.templateHeader === "undefined"
         ? this.defaultTemplateheader
-        : this.selectedTemplate.header;
+        : this.selectedTemplate.templateHeader;
     }
   },
   methods: {
@@ -163,12 +159,12 @@ export default {
     copyCode() {
       this.initCopy = true;
     },
-    setSelectedTemplate() {
-      this.selectedTemplate = this.templates[0];
+    newTemplate(template) {
+      this.templates.push(template);
+      if (this.templates.length === 1) {
+        this.selectedTemplate = this.templates[0];
+      }
     }
-  },
-  created() {
-    this.setSelectedTemplate();
   },
   updated() {
     this.updateCode();

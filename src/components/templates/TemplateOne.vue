@@ -1,5 +1,5 @@
 <template>
-<html>
+<html v-if="active">
   <head>
     <title>NDG</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -41,17 +41,23 @@
 export default {
   name: "TemplateOne",
   props: {
-    imgs: Array
+    imgs: Array,
+    active: Boolean
   },
   data: function() {
     return {
       templateHeader:
-        '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
+        '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">',
+      name: "Template 1",
+      description: "Photo 600px width, images in same folder."
     };
   },
-  mounted() {
-    // this.$emit("templateHeader", templateHeader);
-  },
-  created() {}
+  created() {
+    this.$emit("newTemplate", {
+      templateHeader: this.templateHeader,
+      name: this.name,
+      description: this.description
+    });
+  }
 };
 </script>

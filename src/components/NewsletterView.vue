@@ -1,7 +1,15 @@
 <template>
   <div class="newsletter-view">
-    <TemplateOne :imgs="imgs" v-if="selectedTemplate.name === 'Template 1'"/>
-    <TemplateTwo :imgs="imgs" v-if="selectedTemplate.name === 'Template 2'"/>
+    <TemplateOne
+      :imgs="imgs"
+      :active="selectedTemplate.name === 'Template 1'"
+      @newTemplate="newTemplate"
+    />
+    <TemplateTwo
+      :imgs="imgs"
+      :active="selectedTemplate.name === 'Template 2'"
+      @newTemplate="newTemplate"
+    />
   </div>
 </template>
 
@@ -20,8 +28,8 @@ export default {
     imgs: Array
   },
   methods: {
-    sortImgs() {
-      this.$emit("sortImgs");
+    newTemplate(template) {
+      this.$emit("newTemplate", template);
     }
   }
 };
