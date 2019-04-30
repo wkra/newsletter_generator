@@ -40,19 +40,19 @@
 
 <script>
 export default {
-  name: "TemplateTwo",
+  name: 'TemplateTwo',
   props: {
     imgs: Array,
     active: Boolean
   },
-  data: function() {
+  data() {
     return {
-      name: "Template 2",
-      description: "description 0 width"
+      name: 'Template 2',
+      description: 'description 0 width'
     };
   },
   created() {
-    this.$emit("newTemplate", {
+    this.$emit('newTemplate', {
       templateHeader: this.templateHeader,
       name: this.name,
       description: this.description

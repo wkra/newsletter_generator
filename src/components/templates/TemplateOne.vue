@@ -44,12 +44,12 @@ export default {
     imgs: Array,
     active: Boolean
   },
-  data: function() {
+  data() {
     return {
       templateHeader:
         '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">',
       name: "Template 1",
-      description: "Photo 600px width, images in same folder."
+      description: "Images 600ps width, in the same folder as index.html."
     };
   },
   created() {

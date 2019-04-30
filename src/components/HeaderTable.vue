@@ -60,6 +60,7 @@ export default {
   watch: {
     select(newVal) {
       this.$emit("input", newVal);
+      this.$emit("initSnack", { color: "info", text: "Template Changed." });
     }
   }
 };

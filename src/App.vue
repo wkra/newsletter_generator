@@ -10,8 +10,15 @@
           v-model="selectedTemplate"
           @onUpload="onUpload"
           @copyCode="copyCode"
+          @initSnack="initSnack"
         />
-        <FilesTable :items="imgs" @removeFile="removeImg" @moveFile="move" @updateCode="updateCode"></FilesTable>
+        <FilesTable
+          :items="imgs"
+          @removeFile="removeImg"
+          @moveFile="move"
+          @updateCode="updateCode"
+          @initSnack="initSnack"
+        ></FilesTable>
         <FooterTable :disableBtn="imgs.length < 2" @sortImgs="sortImgs"/>
       </v-content>
       <v-container v-show="showTemplate">
@@ -24,6 +31,10 @@
         />
       </v-container>
       <Code v-if="showTemplate" :code="code" :header="templateHeader" @copyCode="copyCode"/>
+      <v-snackbar :timeout="3000" v-model="snack" :color="snackColor">
+        {{ snackText }}
+        <v-btn flat @click="snack = false">Close</v-btn>
+      </v-snackbar>
     </v-app>
     <CopyTextarea v-if="initCopy" :text="code" v-model="initCopy"/>
   </div>
@@ -49,7 +60,7 @@ export default {
     NewsletterView,
     CopyTextarea
   },
-  data: function() {
+  data() {
     return {
       imgs: [],
       sortDirection: false,
@@ -58,7 +69,10 @@ export default {
         '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">',
       templates: [],
       selectedTemplate: {},
-      initCopy: false
+      initCopy: false,
+      snack: false,
+      snackText: "",
+      snackColor: ""
     };
   },
   computed: {
@@ -76,6 +90,7 @@ export default {
       var files = e.target.files || e.dataTransfer.files;
       if (files.length) {
         this.getFilesAttributes(files);
+        this.initSnack({ color: "info", text: "Files uploaded." });
       }
     },
     getFilesAttributes(files) {
@@ -103,11 +118,13 @@ export default {
     },
     removeImg(index) {
       this.imgs.splice(index, 1);
+      this.initSnack({ color: "error", text: "Image removed." });
     },
     sortImgs() {
       this.imgs.sort(this.compareName);
       this.changeSortDirection();
       this.updateCode();
+      this.initSnack({ color: "success", text: "Images sorted." });
     },
     compareName(a, b) {
       if (a.name < b.name) return this.sortDirection ? -1 : 1;
@@ -118,15 +135,23 @@ export default {
       this.sortDirection = !this.sortDirection;
     },
     move({ currIndex, newIndex }) {
-      var arr = this.imgs;
+      const arr = this.imgs;
       if (newIndex > arr.length - 1) {
         newIndex = 0;
       }
       if (newIndex < 0) {
         newIndex = arr.length - 1;
       }
+
       arr.splice(newIndex, 0, arr.splice(currIndex, 1)[0]);
+      this.initSnack({
+        color: this.getSnackColor(currIndex, newIndex),
+        text: "Image moved."
+      });
       this.updateCode();
+    },
+    getSnackColor(currIndex, newIndex) {
+      return newIndex > currIndex ? "info" : "success";
     },
     changeImgsUrlInCode(code) {
       const reg = /src="([\s\S]*?)"/g,
@@ -158,12 +183,18 @@ export default {
     },
     copyCode() {
       this.initCopy = true;
+      this.initSnack({ color: "error", text: "Copied to clipboard." });
     },
     newTemplate(template) {
       this.templates.push(template);
       if (this.templates.length === 1) {
         this.selectedTemplate = this.templates[0];
       }
+    },
+    initSnack({ color, text }) {
+      this.snack = true;
+      this.snackColor = color;
+      this.snackText = text;
     }
   },
   updated() {

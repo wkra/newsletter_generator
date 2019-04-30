@@ -12,7 +12,7 @@
             @open="open"
             lazy
           >
-            <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
+            <v-icon small class="mr-2" @click="open(props.item)">edit</v-icon>
             {{ props.item.url }}
             <template v-slot:input>
               <v-text-field v-model="props.item.url" label="Edit" single-line counter autofocus></v-text-field>
@@ -26,6 +26,7 @@
             color="blue lighten-2"
             round
             small
+            :disabled="disableArrow"
             @click="move(props.index, props.index + 1)"
           >
             <v-icon>arrow_downward</v-icon>
@@ -36,6 +37,7 @@
             color="green lighten-2"
             round
             small
+            :disabled="disableArrow"
             @click="move(props.index, props.index - 1)"
           >
             <v-icon>arrow_upward</v-icon>
@@ -46,16 +48,12 @@
         </td>
       </template>
     </v-data-table>
-    <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
-      {{ snackText }}
-      <v-btn flat @click="snack = false">Close</v-btn>
-    </v-snackbar>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Nestle",
+  name: "FilesTable",
   components: {},
   props: {
     items: Array
@@ -94,6 +92,11 @@ export default {
       ]
     };
   },
+  computed: {
+    disableArrow() {
+      return this.items.length < 2;
+    }
+  },
   methods: {
     removeFile(index) {
       this.$emit("removeFile", index);
@@ -103,19 +106,13 @@ export default {
     },
     save() {
       this.$emit("updateCode");
-      this.snack = true;
-      this.snackColor = "success";
-      this.snackText = "Data saved";
+      this.$emit("initSnack", { color: "success", text: "Link saved." });
     },
     cancel() {
-      this.snack = true;
-      this.snackColor = "error";
-      this.snackText = "Canceled";
+      this.$emit("initSnack", { color: "error", text: "Canceled." });
     },
     open() {
-      this.snack = true;
-      this.snackColor = "info";
-      this.snackText = "Dialog opened";
+      this.$emit("initSnack", { color: "info", text: "Link editor  opened." });
     }
   }
 };

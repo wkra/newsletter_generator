@@ -49,6 +49,7 @@ export default {
   a {
     position: relative;
     display: block;
+    cursor: pointer;
 
     &::after {
       content: "";
