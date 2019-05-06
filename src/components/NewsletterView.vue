@@ -1,10 +1,6 @@
 <template>
   <div class="newsletter-view">
-    <Nestle
-      :imgs="imgs"
-      :active="selectedTemplate.name === 'Nestle'"
-      @newTemplate="newTemplate"
-    />
+    <Nestle :imgs="imgs" :active="selectedTemplate.name === 'Nestle'" @newTemplate="newTemplate"/>
     <Superpharm
       :imgs="imgs"
       :active="selectedTemplate.name === 'Superpharm'"

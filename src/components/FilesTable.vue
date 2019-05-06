@@ -9,11 +9,10 @@
             :return-value.sync="props.item.url"
             @save="save"
             @cancel="cancel"
-            @open="open"
-            @close="cancel"
             lazy
+            large
           >
-            <v-icon small class="mr-2" @click="open(props.item)">edit</v-icon>
+            <v-icon small class="mr-2">edit</v-icon>
             {{ props.item.url }}
             <template v-slot:input>
               <v-text-field v-model="props.item.url" label="Edit" single-line counter autofocus></v-text-field>
@@ -22,13 +21,13 @@
         </td>
         <td>
           <v-edit-dialog
-                  :return-value.sync="props.item.alt"
-                  @save="save"
-                  @cancel="cancel"
-                  @open="open"
-                  lazy
+            :return-value.sync="props.item.alt"
+            @save="save"
+            @cancel="cancel"
+            lazy
+            large
           >
-            <v-icon small class="mr-2" @click="open(props.item)">edit</v-icon>
+            <v-icon small class="mr-2">edit</v-icon>
             {{ props.item.alt }}
             <template v-slot:input>
               <v-text-field v-model="props.item.alt" label="Edit" single-line counter autofocus></v-text-field>
@@ -58,7 +57,14 @@
           >
             <v-icon>arrow_upward</v-icon>
           </v-btn>
-          <v-btn flat icon color="red lighten-2" round small @click="removeFile(props.index)">
+          <v-btn
+            flat
+            icon
+            color="red lighten-2"
+            round
+            small
+            @click="removeFile(props.index)"
+          >
             <v-icon>close</v-icon>
           </v-btn>
         </td>
@@ -119,19 +125,17 @@ export default {
   methods: {
     removeFile(index) {
       this.$emit("removeFile", index);
+      this.$emit("initSnack", { color: "error", text: "Removed" });
     },
     move(currIndex, newIndex) {
       this.$emit("moveFile", { currIndex: currIndex, newIndex: newIndex });
     },
     save() {
       this.$emit("updateCode");
-      this.$emit("initSnack", { color: "success", text: "Link saved." });
+      this.$emit("initSnack", { color: "success", text: "Saved" });
     },
     cancel() {
       this.$emit("initSnack", { color: "error", text: "Canceled." });
-    },
-    open() {
-      this.$emit("initSnack", { color: "info", text: "Link editor  opened." });
     }
   }
 };
