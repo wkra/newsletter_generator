@@ -1,27 +1,27 @@
 <template>
   <div class="newsletter-view">
-    <TemplateOne
+    <Nestle
       :imgs="imgs"
-      :active="selectedTemplate.name === 'Template 1'"
+      :active="selectedTemplate.name === 'Nestle'"
       @newTemplate="newTemplate"
     />
-    <TemplateTwo
+    <Superpharm
       :imgs="imgs"
-      :active="selectedTemplate.name === 'Template 2'"
+      :active="selectedTemplate.name === 'Superpharm'"
       @newTemplate="newTemplate"
     />
   </div>
 </template>
 
 <script>
-import TemplateOne from "./templates/TemplateOne.vue";
-import TemplateTwo from "./templates/TemplateTwo.vue";
+import Nestle from "./templates/Nestle.vue";
+import Superpharm from "./templates/Superpharm.vue";
 
 export default {
   name: "NewsletterView",
   components: {
-    TemplateOne,
-    TemplateTwo
+    Nestle,
+    Superpharm
   },
   props: {
     selectedTemplate: Object,

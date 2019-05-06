@@ -19,6 +19,21 @@
             </template>
           </v-edit-dialog>
         </td>
+        <td>
+          <v-edit-dialog
+                  :return-value.sync="props.item.alt"
+                  @save="save"
+                  @cancel="cancel"
+                  @open="open"
+                  lazy
+          >
+            <v-icon small class="mr-2" @click="open(props.item)">edit</v-icon>
+            {{ props.item.alt }}
+            <template v-slot:input>
+              <v-text-field v-model="props.item.alt" label="Edit" single-line counter autofocus></v-text-field>
+            </template>
+          </v-edit-dialog>
+        </td>
         <td class="text-xs-center">
           <v-btn
             flat
@@ -80,6 +95,12 @@ export default {
         {
           text: "Link",
           value: "url",
+          align: "center",
+          sortable: false
+        },
+        {
+          text: "Alt",
+          value: "alt",
           align: "center",
           sortable: false
         },

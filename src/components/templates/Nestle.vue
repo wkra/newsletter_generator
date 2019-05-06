@@ -1,11 +1,10 @@
 <template>
 <html v-if="active">
   <head>
-    <title>Template 2</title>
+    <title>NDG</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   </head>
   <body>
-    <h1>Template 2 - TEST</h1>
     <table width="100%" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td align="center" style="text-align: center;">
@@ -21,7 +20,7 @@
                     width="600"
                     :height="img.height"
                     border="0"
-                    alt
+                    :alt="img.alt"
                     style="display:block;"
                   >
                 </a>
@@ -40,19 +39,22 @@
 
 <script>
 export default {
-  name: 'TemplateTwo',
+  name: "Nestle",
   props: {
     imgs: Array,
     active: Boolean
   },
   data() {
     return {
-      name: 'Template 2',
-      description: 'description 0 width'
+      templateHeader:
+        '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">',
+      name: "Nestle",
+      description: "Images 600px width, in the same folder as index.html.",
+      imagesLocation: ''
     };
   },
   created() {
-    this.$emit('newTemplate', {
+    this.$emit("newTemplate", {
       templateHeader: this.templateHeader,
       name: this.name,
       description: this.description

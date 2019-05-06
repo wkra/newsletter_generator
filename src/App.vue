@@ -50,7 +50,7 @@ import NewsletterView from "./components/NewsletterView.vue";
 import CopyTextarea from "./components/CopyTextarea.vue";
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
     Toolbar,
     Code,
@@ -64,15 +64,13 @@ export default {
     return {
       imgs: [],
       sortDirection: false,
-      code: "",
-      defaultTemplateheader:
-        '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">',
+      code: '',
       templates: [],
       selectedTemplate: {},
       initCopy: false,
       snack: false,
-      snackText: "",
-      snackColor: ""
+      snackText: '',
+      snackColor: ''
     };
   },
   computed: {
@@ -80,8 +78,8 @@ export default {
       return this.imgs.length;
     },
     templateHeader() {
-      return typeof this.selectedTemplate.templateHeader === "undefined"
-        ? this.defaultTemplateheader
+      return typeof this.selectedTemplate.templateHeader === 'undefined'
+        ? ''
         : this.selectedTemplate.templateHeader;
     }
   },
@@ -104,7 +102,8 @@ export default {
           name: files[i].name,
           height: 0,
           src: img.src,
-          url: "https://"
+          url: 'https://',
+          alt: ''
         });
 
         this.getFileHeight(img, this.imgs.length - 1);
@@ -154,13 +153,16 @@ export default {
       return newIndex > currIndex ? "info" : "success";
     },
     changeImgsUrlInCode(code) {
-      const reg = /src="([\s\S]*?)"/g,
-        imgs = this.imgs;
-      let imgIndex = -1;
+      const reg = /src="blob([\s\S]*?)"/g,
+          imgs = this.imgs,
+          imgsLocation = this.selectedTemplate.imagesLocation ? this.selectedTemplate.imagesLocation : '';
+      let imgIndex = -1,
+          imgName = '';
 
       return code.replace(reg, () => {
-        imgIndex++;
-        return 'src="' + imgs[imgIndex].name + '"';
+          imgIndex++;
+          imgName = imgs[imgIndex].name;
+          return `src="${imgsLocation}${imgName}"`;
       });
     },
     changeFormatting(code) {
@@ -173,9 +175,23 @@ export default {
           : ">" + newLine + innerVal + newLine + "<";
       });
     },
+    addAdditionalStyles(code, additionalStyles) {
+        const endHead = '</head>';
+        return code.replace(endHead, `${additionalStyles}${endHead}`);
+    },
+    replacePx(code){
+      const reg = / 0px/g;
+
+      return code.replace(reg, ' 0');
+    },
     updateCode() {
-      if (this.$refs.template) {
+      if (this.$refs.template && this.imgs.length) {
+        const additionalStyles = this.selectedTemplate.additionalStyles;
         let currHtml = this.$refs.template.$el.children[0].outerHTML;
+        if (additionalStyles) {
+          currHtml = this.addAdditionalStyles(currHtml, additionalStyles);
+        }
+        currHtml = this.replacePx(currHtml);
         currHtml = this.changeImgsUrlInCode(currHtml);
         currHtml = this.changeFormatting(currHtml);
         this.code = currHtml;
