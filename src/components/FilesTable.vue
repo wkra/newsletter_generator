@@ -10,6 +10,7 @@
             @save="save"
             @cancel="cancel"
             @open="open"
+            @close="cancel"
             lazy
           >
             <v-icon small class="mr-2" @click="open(props.item)">edit</v-icon>
@@ -75,9 +76,6 @@ export default {
   },
   data() {
     return {
-      snack: false,
-      snackColor: "",
-      snackText: "",
       headers: [
         {
           text: "Index",
