@@ -132,7 +132,7 @@ export default {
     changeSortDirection() {
       this.sortDirection = !this.sortDirection;
     },
-    move({ currIndex, newIndex }) {
+    move({ currIndex, newIndex, name }) {
       const arr = this.imgs;
       if (newIndex > arr.length - 1) {
         newIndex = 0;
@@ -144,7 +144,7 @@ export default {
       arr.splice(newIndex, 0, arr.splice(currIndex, 1)[0]);
       this.initSnack({
         color: this.getSnackColor(currIndex, newIndex),
-        text: "Image moved"
+        text: `${name} moved`
       });
       this.updateCode();
     },
@@ -182,8 +182,11 @@ export default {
     },
     replacePx(code) {
       const reg = / 0px/g;
-
       return code.replace(reg, " 0");
+    },
+    correctImgPath(code){
+      const reg = /src="\//g;
+      return code.replace(reg, 'src="');
     },
     updateCode() {
       if (this.$refs.template && this.imgs.length) {
@@ -194,6 +197,7 @@ export default {
         }
         currHtml = this.replacePx(currHtml);
         currHtml = this.changeImgsUrlInCode(currHtml);
+        currHtml = this.correctImgPath(currHtml);
         currHtml = this.changeFormatting(currHtml);
         this.code = currHtml;
       }
@@ -220,5 +224,3 @@ export default {
 };
 </script>
 
-<style lang="less">
-</style>

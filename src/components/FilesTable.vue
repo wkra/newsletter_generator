@@ -42,7 +42,7 @@
             round
             small
             :disabled="disableArrow"
-            @click="move(props.index, props.index + 1)"
+            @click="move(props.index, props.index + 1, props.item.name)"
           >
             <v-icon>arrow_downward</v-icon>
           </v-btn>
@@ -53,7 +53,7 @@
             round
             small
             :disabled="disableArrow"
-            @click="move(props.index, props.index - 1)"
+            @click="move(props.index, props.index - 1, props.item.name)"
           >
             <v-icon>arrow_upward</v-icon>
           </v-btn>
@@ -63,7 +63,7 @@
             color="red lighten-2"
             round
             small
-            @click="removeFile(props.index)"
+            @click="removeFile(props.index, props.item.name)"
           >
             <v-icon>close</v-icon>
           </v-btn>
@@ -123,12 +123,12 @@ export default {
     }
   },
   methods: {
-    removeFile(index) {
+    removeFile(index, name) {
       this.$emit("removeFile", index);
-      this.$emit("initSnack", { color: "error", text: "Removed" });
+      this.$emit("initSnack", { color: "error", text: `${name} removed`});
     },
-    move(currIndex, newIndex) {
-      this.$emit("moveFile", { currIndex: currIndex, newIndex: newIndex });
+    move(currIndex, newIndex, name) {
+      this.$emit("moveFile", { currIndex: currIndex, newIndex: newIndex, name: name });
     },
     save() {
       this.$emit("updateCode");

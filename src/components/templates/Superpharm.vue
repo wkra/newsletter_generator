@@ -24,7 +24,7 @@
                 >
                   <img
                     style="display:block;margin:0; border:0"
-                    src="images/newsletter-600px_01.png"
+                    src="@/assets/newsletter-600px_01.png"
                     width="600"
                     alt
                   >
@@ -48,7 +48,7 @@
                   style="margin: 0; border: 0; outline: none"
                 >
                   <img
-                    src="images/newsletter-600px_02.jpg"
+                    src="@/assets/newsletter-600px_02.jpg"
                     width="141"
                     height="46"
                     border="0"
@@ -64,7 +64,7 @@
                   style="margin: 0; border: 0; outline: none"
                 >
                   <img
-                    src="images/newsletter-600px_03.jpg"
+                    src="@/assets/newsletter-600px_03.jpg"
                     width="107"
                     height="46"
                     border="0"
@@ -80,7 +80,7 @@
                   style="margin: 0; border: 0; outline: none"
                 >
                   <img
-                    src="images/newsletter-600px_04.jpg"
+                    src="@/assets/newsletter-600px_04.jpg"
                     width="133"
                     height="46"
                     border="0"
@@ -96,7 +96,7 @@
                   style="margin: 0; border: 0; outline: none"
                 >
                   <img
-                    src="images/newsletter-600px_05.jpg"
+                    src="@/assets/newsletter-600px_05.jpg"
                     width="219"
                     height="46"
                     border="0"
@@ -109,7 +109,7 @@
           </table>
           <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
             <tr v-for="(img, index) in imgs" :key="index">
-              <td width="600" :height="img.height">
+              <td>
                 <a :href="img.url" target="_blank" style="outline: 0;">
                   <img
                     :src="img.src"
@@ -139,7 +139,7 @@
                   style="margin: 0; border: 0; outline: none"
                 >
                   <img
-                    src="images/korzysci_01.jpg"
+                    src="@/assets/korzysci_01.jpg"
                     width="129"
                     height="100"
                     border="0"
@@ -155,7 +155,7 @@
                   style="margin: 0; border: 0; outline: none"
                 >
                   <img
-                    src="images/korzysci_02.jpg"
+                    src="@/assets/korzysci_02.jpg"
                     width="112"
                     height="100"
                     border="0"
@@ -171,7 +171,7 @@
                   style="margin: 0; border: 0; outline: none"
                 >
                   <img
-                    src="images/korzysci_03.jpg"
+                    src="@/assets/korzysci_03.jpg"
                     width="105"
                     height="100"
                     border="0"
@@ -187,7 +187,7 @@
                   style="margin: 0; border: 0; outline: none"
                 >
                   <img
-                    src="images/korzysci_04.jpg"
+                    src="@/assets/korzysci_04.jpg"
                     width="123"
                     height="100"
                     border="0"
@@ -203,7 +203,7 @@
                   style="margin: 0; border: 0; outline: none"
                 >
                   <img
-                    src="images/korzysci_05.jpg"
+                    src="@/assets/korzysci_05.jpg"
                     width="131"
                     height="100"
                     border="0"
@@ -224,7 +224,7 @@
                 >
                   <img
                     style="display:block;margin:0; border:0"
-                    src="images/mailing-stopka_01.gif"
+                    src="@/assets/mailing-stopka_01.gif"
                     width="64"
                     height="68"
                     border="0"
@@ -240,7 +240,7 @@
                 >
                   <img
                     style="display:block;margin:0; border:0"
-                    src="images/mailing-stopka_02.gif"
+                    src="@/assets/mailing-stopka_02.gif"
                     width="43"
                     height="68"
                     border="0"
@@ -256,7 +256,7 @@
                 >
                   <img
                     style="display:block;margin:0; border:0"
-                    src="images/mailing-stopka_03.gif"
+                    src="@/assets/mailing-stopka_03.gif"
                     width="45"
                     height="68"
                     border="0"
@@ -272,7 +272,7 @@
                 >
                   <img
                     style="display:block;margin:0; border:0"
-                    src="images/mailing-stopka_04.gif"
+                    src="@/assets/mailing-stopka_04.gif"
                     width="44"
                     height="68"
                     border="0"
@@ -288,7 +288,7 @@
                 >
                   <img
                     style="display:block;margin:0; border:0"
-                    src="images/mailing-stopka_05.gif"
+                    src="@/assets/mailing-stopka_05.gif"
                     width="54"
                     height="68"
                     border="0"
@@ -297,10 +297,10 @@
                 </a>
               </td>
               <td width="160" height="68">
-                <a style="margin: 0; border: 0; outline: none" href target="_blank">
+                <a style="margin: 0; border: 0; outline: none" href="https://www.superpharm.pl/" target="_blank">
                   <img
                     style="display:block;margin:0; border:0"
-                    src="images/mailing-stopka_06.gif"
+                    src="@/assets/mailing-stopka_06.gif"
                     width="160"
                     height="68"
                     border="0"
@@ -316,7 +316,7 @@
                 >
                   <img
                     style="display:block;margin:0; border:0"
-                    src="images/mailing-stopka_07.jpg"
+                    src="@/assets/mailing-stopka_07.jpg"
                     width="190"
                     height="68"
                     border="0"
