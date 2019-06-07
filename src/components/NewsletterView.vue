@@ -40,6 +40,10 @@ export default {
 
   table {
     margin: auto;
+
+    & * {
+      position: relative;
+    }
   }
 
   a {

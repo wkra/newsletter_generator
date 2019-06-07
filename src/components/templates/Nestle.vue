@@ -14,6 +14,7 @@
           <table width="600" border="0" cellpadding="0" cellspacing="0" align="center">
             <tr v-for="(img, index) in imgs" :key="index">
               <td width="600" :height="img.height">
+                <Additional :img="img" />
                 <a :href="img.url" target="_blank" style="outline: 0;">
                   <img
                     :src="img.src"
@@ -38,8 +39,14 @@
 </template>
 
 <script>
+import Additional from ".././Additional.vue";
+
+
 export default {
   name: "Nestle",
+  components: {
+    Additional
+  },
   props: {
     imgs: Array,
     active: Boolean
