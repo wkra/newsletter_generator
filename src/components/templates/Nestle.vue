@@ -61,7 +61,7 @@ export default {
     };
   },
   created() {
-    this.$emit("newTemplate", {
+    this.$store.dispatch('addTemplate', {
       templateHeader: this.templateHeader,
       name: this.name,
       description: this.description

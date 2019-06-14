@@ -1,11 +1,11 @@
 <template>
   <div class="newsletter-view">
-    <Nestle :imgs="imgs" :active="selectedTemplate.name === 'Nestle'" @newTemplate="newTemplate"/>
+    <Nestle
+        :imgs="imgs"
+        :active="selectedTemplate.name === 'Nestle'"/>
     <Superpharm
       :imgs="imgs"
-      :active="selectedTemplate.name === 'Superpharm'"
-      @newTemplate="newTemplate"
-    />
+      :active="selectedTemplate.name === 'Superpharm'"/>
   </div>
 </template>
 
@@ -22,11 +22,6 @@ export default {
   props: {
     selectedTemplate: Object,
     imgs: Array
-  },
-  methods: {
-    newTemplate(template) {
-      this.$emit("newTemplate", template);
-    }
   }
 };
 </script>
@@ -60,7 +55,7 @@ export default {
       top: 0;
       right: 0;
       opacity: 0;
-      box-shadow: inset 0 0 30px 0px #000;
+      box-shadow: inset 0 0 30px 0 #000;
       transition: all 0.5s;
     }
 

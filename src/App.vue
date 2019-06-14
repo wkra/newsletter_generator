@@ -10,14 +10,10 @@
           v-model="selectedTemplate"
           @onUpload="onUpload"
           @copyCode="copyCode"
-          @initSnack="initSnack"
         />
         <FilesTable
           :items="imgs"
-          @removeFile="removeImg"
-          @moveFile="move"
           @updateCode="updateCode"
-          @initSnack="initSnack"
         ></FilesTable>
         <FooterTable :disableBtn="imgs.length < 2" @sortImgs="sortImgs"/>
       </v-content>
@@ -27,13 +23,12 @@
           v-show="showTemplate"
           :imgs="imgs"
           :selectedTemplate="selectedTemplate"
-          @newTemplate="newTemplate"
         />
       </v-container>
       <Code v-if="showTemplate" :code="code" :header="templateHeader" @copyCode="copyCode"/>
-      <v-snackbar :timeout="3000" v-model="snack" :color="snackColor">
-        {{ snackText }}
-        <v-btn flat @click="snack = false">Close</v-btn>
+      <v-snackbar :value="snack.show" :color="snack.color">
+        {{ snack.text }}
+        <v-btn flat @click="closeSnack">Close</v-btn>
       </v-snackbar>
     </v-app>
     <CopyTextarea v-if="initCopy" :text="code" v-model="initCopy"/>
@@ -62,15 +57,8 @@ export default {
   },
   data() {
     return {
-      imgs: [],
-      sortDirection: false,
       code: "",
-      templates: [],
-      selectedTemplate: {},
       initCopy: false,
-      snack: false,
-      snackText: "",
-      snackColor: ""
     };
   },
   computed: {
@@ -81,6 +69,25 @@ export default {
       return typeof this.selectedTemplate.templateHeader === "undefined"
         ? ""
         : this.selectedTemplate.templateHeader;
+    },
+    imgs() {
+        return this.$store.getters.imgs;
+    },
+    snack() {
+      return this.$store.getters.snack;
+    },
+    templates(){
+      return this.$store.getters.templates;
+    },
+    selectedTemplateIndex(){
+      return this.$store.getters.selectedTemplateIndex;
+    },
+    selectedTemplate(){
+      if (this.templates.length > 0) {
+        return this.templates[this.selectedTemplateIndex];
+      } else {
+        return {};
+      }
     }
   },
   methods: {
@@ -88,7 +95,7 @@ export default {
       var files = e.target.files || e.dataTransfer.files;
       if (files.length) {
         this.getFilesAttributes(files);
-        this.initSnack({ color: "info", text: "Files uploaded." });
+        this.$store.dispatch('setSnack', {text: "Files uploaded.", color: "info"});
       }
     },
     getFilesAttributes(files) {
@@ -98,7 +105,7 @@ export default {
         img = new Image();
         img.src = window.URL.createObjectURL(files[i]);
 
-        this.imgs.push({
+        this.$store.dispatch('addImg', {
           name: files[i].name,
           height: 0,
           src: img.src,
@@ -110,46 +117,17 @@ export default {
       }
     },
     getFileHeight(img, index) {
-      var self = this;
-      img.onload = function() {
-        self.imgs[index].height = img.naturalHeight;
-      };
-    },
-    removeImg(index) {
-      this.imgs.splice(index, 1);
+      img.onload = (() => {
+        this.$store.dispatch('setHeight', {
+          index: index,
+          height: img.naturalHeight
+        });
+      }).bind(this);
     },
     sortImgs() {
-      this.imgs.sort(this.compareName);
-      this.changeSortDirection();
+      this.$store.dispatch('sortImgs');
       this.updateCode();
-      this.initSnack({ color: "success", text: "Images sorted." });
-    },
-    compareName(a, b) {
-      if (a.name < b.name) return this.sortDirection ? -1 : 1;
-      if (a.name > b.name) return this.sortDirection ? 1 : -1;
-      return 0;
-    },
-    changeSortDirection() {
-      this.sortDirection = !this.sortDirection;
-    },
-    move({ currIndex, newIndex, name }) {
-      const arr = this.imgs;
-      if (newIndex > arr.length - 1) {
-        newIndex = 0;
-      }
-      if (newIndex < 0) {
-        newIndex = arr.length - 1;
-      }
-
-      arr.splice(newIndex, 0, arr.splice(currIndex, 1)[0]);
-      this.initSnack({
-        color: this.getSnackColor(currIndex, newIndex),
-        text: `${name} moved`
-      });
-      this.updateCode();
-    },
-    getSnackColor(currIndex, newIndex) {
-      return newIndex > currIndex ? "info" : "success";
+      this.$store.dispatch('setSnack', {text: "Images sorted.", color: "success"});
     },
     changeImgsUrlInCode(code) {
       const reg = /src="blob([\s\S]*?)"/g,
@@ -204,18 +182,10 @@ export default {
     },
     copyCode() {
       this.initCopy = true;
-      this.initSnack({ color: "error", text: "Copied to clipboard." });
+      this.$store.dispatch('setSnack', {text: "Copied to clipboard.", color: "error"});
     },
-    newTemplate(template) {
-      this.templates.push(template);
-      if (this.templates.length === 1) {
-        this.selectedTemplate = this.templates[0];
-      }
-    },
-    initSnack({ color, text }) {
-      this.snack = true;
-      this.snackColor = color;
-      this.snackText = text;
+    closeSnack(){
+      this.$store.dispatch('closeSnack');
     }
   },
   updated() {

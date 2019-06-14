@@ -119,23 +119,38 @@ export default {
   },
   computed: {
     disableArrow() {
-      return this.items.length < 2;
+      if (this.items) {
+        return this.items.length < 2;
+      }
+        return true
     }
   },
   methods: {
     removeFile(index, name) {
-      this.$emit("removeFile", index);
-      this.$emit("initSnack", { color: "error", text: `${name} removed`});
+      this.$store.dispatch('setSnack', {text: `${name} removed`, color: "error"});
+      this.$store.dispatch('removeImg', index);
     },
     move(currIndex, newIndex, name) {
-      this.$emit("moveFile", { currIndex: currIndex, newIndex: newIndex, name: name });
+      const itemsLength = this.items.length;
+      if (newIndex > itemsLength - 1) {
+        newIndex = 0;
+      }
+      if (newIndex < 0) {
+        newIndex = itemsLength - 1;
+      }
+      this.$store.dispatch('moveImg', { currIndex, newIndex});
+      this.$store.dispatch('setSnack', {text: `${name} moved`, color: this.getSnackColor(currIndex, newIndex)});
+      this.$emit("updateCode");
+    },
+    getSnackColor(currIndex, newIndex) {
+      return newIndex > currIndex ? "info" : "success";
     },
     save() {
       this.$emit("updateCode");
-      this.$emit("initSnack", { color: "success", text: "Saved" });
+      this.$store.dispatch('setSnack', {text: "Saved.", color: "success"});
     },
     cancel() {
-      this.$emit("initSnack", { color: "error", text: "Canceled." });
+      this.$store.dispatch('setSnack', {text: "Canceled.", color: "error"});
     }
   }
 };
