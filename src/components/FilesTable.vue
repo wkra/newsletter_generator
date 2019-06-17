@@ -41,7 +41,7 @@
             color="blue lighten-2"
             round
             small
-            :disabled="disableArrow"
+            :disabled="disableArrow || props.item.parent > -1"
             @click="move(props.index, props.index + 1, props.item.name)"
           >
             <v-icon>arrow_downward</v-icon>
@@ -52,7 +52,7 @@
             color="green lighten-2"
             round
             small
-            :disabled="disableArrow"
+            :disabled="disableArrow || props.item.parent > -1"
             @click="move(props.index, props.index - 1, props.item.name)"
           >
             <v-icon>arrow_upward</v-icon>
@@ -63,7 +63,7 @@
             color="red lighten-2"
             round
             small
-            @click="removeFile(props.index, props.item.name)"
+            @click="removeFile(props.item.id, props.item.name, props.item.parent)"
           >
             <v-icon>close</v-icon>
           </v-btn>
@@ -126,9 +126,9 @@ export default {
     }
   },
   methods: {
-    removeFile(index, name) {
+    removeFile(id, name, parentId) {
+      this.$store.dispatch('removeImgById', {id, parentId});
       this.$store.dispatch('setSnack', {text: `${name} removed`, color: "error"});
-      this.$store.dispatch('removeImg', index);
     },
     move(currIndex, newIndex, name) {
       const itemsLength = this.items.length;

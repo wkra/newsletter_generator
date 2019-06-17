@@ -7,12 +7,11 @@
           v-if="templates.length"
           :imgsLength="imgs.length"
           :templates="templates"
-          v-model="selectedTemplate"
           @onUpload="onUpload"
           @copyCode="copyCode"
         />
         <FilesTable
-          :items="imgs"
+          :items="tableItems"
           @updateCode="updateCode"
         ></FilesTable>
         <FooterTable :disableBtn="imgs.length < 2" @sortImgs="sortImgs"/>
@@ -63,7 +62,7 @@ export default {
   },
   computed: {
     showTemplate() {
-      return this.imgs.length;
+      return this.imgs.length > 0;
     },
     templateHeader() {
       return typeof this.selectedTemplate.templateHeader === "undefined"
@@ -72,6 +71,23 @@ export default {
     },
     imgs() {
         return this.$store.getters.imgs;
+    },
+      id() {
+          return this.$store.getters.id;
+      },
+    tableItems() {
+      const items = [];
+
+      this.imgs.forEach((el) => {
+        items.push(el);
+
+        if (el.children.length > 0) {
+          el.children.forEach((childEl) => {
+            items.push(childEl);
+          })
+        }
+      });
+      return items;
     },
     snack() {
       return this.$store.getters.snack;
@@ -99,25 +115,38 @@ export default {
       }
     },
     getFilesAttributes(files) {
-      let i, img;
+      let i, img, imgData;
 
       for (i = 0; i < files.length; i++) {
         img = new Image();
         img.src = window.URL.createObjectURL(files[i]);
 
-        this.$store.dispatch('addImg', {
-          name: files[i].name,
-          height: 0,
-          src: img.src,
-          url: "https://",
-          alt: ""
-        });
+        imgData = this.getImg();
+        imgData.name = files[i].name;
+        imgData.src = img.src;
+        imgData.id = this.id;
+
+        this.$store.dispatch('setNewId');
+        this.$store.dispatch('addImg', imgData);
 
         this.getFileHeight(img, this.imgs.length - 1);
       }
     },
+    getImg() {
+      return {
+        name: '',
+        height: 0,
+        top: 0,
+        src: '',
+        url: "https://",
+        alt: "",
+        children: [],
+        parent: -1
+      }
+    },
     getFileHeight(img, index) {
       img.onload = (() => {
+
         this.$store.dispatch('setHeight', {
           index: index,
           height: img.naturalHeight

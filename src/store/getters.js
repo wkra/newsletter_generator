@@ -5,11 +5,14 @@ const getters = {
     snack(state) {
         return state.snack;
     },
-    templates(state){
+    templates(state) {
         return state.templates;
     },
-    selectedTemplateIndex(state){
+    selectedTemplateIndex(state) {
         return state.selectedTemplateIndex;
+    },
+    id(state) {
+        return state.id;
     }
 };
 

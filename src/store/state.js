@@ -8,6 +8,7 @@ const state = {
         color: '',
         timer: ''
     },
+    id: 1,
     sortDirection: false
 };
 

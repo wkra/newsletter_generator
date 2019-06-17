@@ -3,15 +3,16 @@
     <v-layout row wrap align-center>
       <v-flex xs3>
         <v-select
-          v-model="select"
-          :hint="select.description"
+          :value="selectedTemplateIndex"
+          :hint="templates[selectedTemplateIndex].description"
           :items="templates"
           item-text="name"
           item-value="name"
-          label="Select"
+          :label="templates[selectedTemplateIndex].name"
           persistent-hint
           return-object
           single-line
+          @change="selectChange"
         ></v-select>
       </v-flex>
       <v-flex xs12 class="text-xs-center text-sm-center text-md-center text-lg-center">
@@ -41,10 +42,10 @@ export default {
     imgsLength: Number,
     templates: Array
   },
-  data() {
-    return {
-      select: this.templates[0]
-    };
+  computed: {
+    selectedTemplateIndex() {
+      return this.$store.getters.selectedTemplateIndex;
+    }
   },
   methods: {
     pickFile() {
@@ -55,11 +56,9 @@ export default {
     },
     copyCode() {
       this.$emit("copyCode");
-    }
-  },
-  watch: {
-    select(newVal) {
-      this.$emit("input", newVal);
+    },
+    selectChange(e){
+      this.$store.dispatch('setSelectedTemplateIndex', e.index);
       this.$store.dispatch('setSnack', {text: "Template Changed.", color: "info"});
     }
   }

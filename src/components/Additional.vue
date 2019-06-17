@@ -8,7 +8,7 @@
             <div class="additional__break"
                  v-for="(breakLine, index) in breaks"
                  :key="index"
-                 :style="{top: `${breaks[index].top}px`}"
+                 :style="{top: `${breakLine.top}px`}"
                  @mousedown="startMove($event, index)">
                 <div class="additional__hr" :style="{height: `${hrHeight}px`}"
                      :class="{active: currIndex === index && active }">
@@ -27,7 +27,6 @@
         name: "Additional",
         data() {
             return {
-                breaks: [],
                 mousePosition: 0,
                 currIndex: 0,
                 active: false,
@@ -35,13 +34,22 @@
             }
         },
         props: {
-            img: Object
+            imgIndex: Number
+        },
+        computed: {
+            imgs() {
+                return this.$store.getters.imgs;
+            },
+            img (){
+                return this.imgs[this.imgIndex];
+            },
+            breaks(){
+                return this.imgs[this.imgIndex].children;
+            }
         },
         methods: {
             addBreak() {
-                this.breaks.push({
-                    top: 10
-                })
+                this.$store.dispatch('addImgChildren', this.imgIndex);
             },
             startMove(e, i) {
                 if (e.which === 1) {
@@ -52,7 +60,6 @@
                     document.addEventListener('mousemove', this.moveLine);
                     document.addEventListener("mouseup", this.stopMove);
                 }
-
             },
 
             moveLine(e) {
@@ -61,19 +68,42 @@
                 const currTop = this.breaks[this.currIndex].top;
                 let newTop = currTop - (this.mousePosition - currY);
                 newTop = this.validateVal(newTop);
-
-                this.breaks[this.currIndex].top = newTop;
+                this.$store.dispatch('changeChildrenImgTop', {parentIndex: this.imgIndex, childIndex: this.currIndex, top: newTop});
                 this.mousePosition = currY;
             },
 
             validateVal(val) {
+                // check top of image
                 if (val < 1) {
                     return 1;
                 }
-                const maxBottomVal = this.img.height - this.hrHeight;
-                if (val > maxBottomVal) {
-                    return maxBottomVal;
+
+                // check bottom of image
+                const maxImgHeight = this.img.height - this.hrHeight;
+                if (val > maxImgHeight) {
+                    return maxImgHeight;
                 }
+
+                if (this.breaks.length > 1) {
+                    // check break line before
+                    if (this.currIndex > 0) {
+                        const maxTopVal = this.breaks[this.currIndex - 1].top;
+
+                        if (val < maxTopVal) {
+                            return maxTopVal + this.hrHeight;
+                        }
+                    }
+
+                    // check break line after
+                    if (this.currIndex <= this.breaks.length - 2){
+                        const maxBottomVal = this.breaks[this.currIndex + 1].top;
+
+                        if (val > maxBottomVal) {
+                            return maxBottomVal - this.hrHeight;
+                        }
+                    }
+                }
+
                 return val;
             },
 
@@ -86,7 +116,7 @@
 
             removeLine(e, i) {
                 e.preventDefault();
-                this.breaks.splice(i, 1);
+                this.$store.dispatch('removeChildren', {parentIndex: this.imgIndex, childIndex: i});
             }
         }
     };

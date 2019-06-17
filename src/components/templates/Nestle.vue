@@ -14,7 +14,8 @@
           <table width="600" border="0" cellpadding="0" cellspacing="0" align="center">
             <tr v-for="(img, index) in imgs" :key="index">
               <td width="600" :height="img.height">
-                <Additional :img="img" />
+                <Additional :img="img"
+                :imgIndex="index"/>
                 <a :href="img.url" target="_blank" style="outline: 0;">
                   <img
                     :src="img.src"
