@@ -12,7 +12,6 @@
         />
         <FilesTable
           :items="tableItems"
-          @updateCode="updateCode"
         ></FilesTable>
         <FooterTable :disableBtn="imgs.length < 2" @sortImgs="sortImgs"/>
       </v-content>
@@ -24,13 +23,15 @@
           :selectedTemplate="selectedTemplate"
         />
       </v-container>
-      <Code v-if="showTemplate" :code="code" :header="templateHeader" @copyCode="copyCode"/>
+      <Code v-if="showTemplate"
+            :code="newsletterCode"
+            @copyCode="copyCode"/>
       <v-snackbar :value="snack.show" :color="snack.color">
         {{ snack.text }}
         <v-btn flat @click="closeSnack">Close</v-btn>
       </v-snackbar>
     </v-app>
-    <CopyTextarea v-if="initCopy" :text="code" v-model="initCopy"/>
+    <CopyTextarea v-if="initCopy" :text="newsletterCode" v-model="initCopy"/>
   </div>
 </template>
 
@@ -104,6 +105,30 @@ export default {
       } else {
         return {};
       }
+    },
+    selectedTemplateContent(){
+      let content = '';
+      if (this.selectedTemplate) {
+        const loopCode = this.selectedTemplate.code.loop;
+
+        this.tableItems.forEach((el) => {
+          let currLoop = loopCode;
+          currLoop = currLoop.replace(/%height%/gm, el.height);
+          currLoop = currLoop.replace(/%alt%/gm, el.alt);
+          currLoop = currLoop.replace(/%src%/gm, el.name);
+          currLoop = currLoop.replace(/%href%/gm, el.url);
+          content += currLoop;
+        })
+      }
+      return content
+    },
+    newsletterCode(){
+      const template = this.selectedTemplate;
+      if (template) {
+        return template.code.top + this.selectedTemplateContent + template.code.bottom;
+      } else {
+        return ''
+      }
     }
   },
   methods: {
@@ -111,7 +136,11 @@ export default {
       var files = e.target.files || e.dataTransfer.files;
       if (files.length) {
         this.getFilesAttributes(files);
-        this.$store.dispatch('setSnack', {text: "Files uploaded.", color: "info"});
+
+        this.$store.dispatch('setSnack', {
+          text: "Files uploaded.",
+          color: "info"
+        });
       }
     },
     getFilesAttributes(files) {
@@ -149,76 +178,26 @@ export default {
 
         this.$store.dispatch('setHeight', {
           index: index,
-          height: img.naturalHeight
+          height: img.naturalHeight,
+          naturalHeight: img.naturalHeight
         });
       }).bind(this);
     },
     sortImgs() {
       this.$store.dispatch('sortImgs');
-      this.updateCode();
-      this.$store.dispatch('setSnack', {text: "Images sorted.", color: "success"});
-    },
-    changeImgsUrlInCode(code) {
-      const reg = /src="blob([\s\S]*?)"/g,
-        imgs = this.imgs,
-        imgsLocation = this.selectedTemplate.imagesLocation
-          ? this.selectedTemplate.imagesLocation
-          : "";
-      let imgIndex = -1,
-        imgName = "";
-
-      return code.replace(reg, () => {
-        imgIndex++;
-        imgName = imgs[imgIndex].name;
-        return `src="${imgsLocation}${imgName}"`;
-      });
-    },
-    changeFormatting(code) {
-      const reg = />([\s\S]*?)</g,
-        newLine = "\n";
-
-      return code.replace(reg, (a, innerVal) => {
-        return innerVal === ""
-          ? ">" + newLine + "<"
-          : ">" + newLine + innerVal + newLine + "<";
-      });
-    },
-    addAdditionalStyles(code, additionalStyles) {
-      const endHead = "</head>";
-      return code.replace(endHead, `${additionalStyles}${endHead}`);
-    },
-    replacePx(code) {
-      const reg = / 0px/g;
-      return code.replace(reg, " 0");
-    },
-    correctImgPath(code){
-      const reg = /src="\//g;
-      return code.replace(reg, 'src="');
-    },
-    updateCode() {
-      if (this.$refs.template && this.imgs.length) {
-        const additionalStyles = this.selectedTemplate.additionalStyles;
-        let currHtml = this.$refs.template.$el.children[0].outerHTML;
-        if (additionalStyles) {
-          currHtml = this.addAdditionalStyles(currHtml, additionalStyles);
-        }
-        currHtml = this.replacePx(currHtml);
-        currHtml = this.changeImgsUrlInCode(currHtml);
-        currHtml = this.correctImgPath(currHtml);
-        currHtml = this.changeFormatting(currHtml);
-        this.code = currHtml;
-      }
+      this.$store.dispatch('setSnack', {
+        text: "Images sorted.",
+        color: "success"});
     },
     copyCode() {
       this.initCopy = true;
-      this.$store.dispatch('setSnack', {text: "Copied to clipboard.", color: "error"});
+      this.$store.dispatch('setSnack', {
+        text: "Copied to clipboard.",
+        color: "error"});
     },
     closeSnack(){
       this.$store.dispatch('closeSnack');
     }
-  },
-  updated() {
-    this.updateCode();
   }
 };
 </script>

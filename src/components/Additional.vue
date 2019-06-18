@@ -79,7 +79,8 @@
                 }
 
                 // check bottom of image
-                const maxImgHeight = this.img.height - this.hrHeight;
+                const maxImgHeight = this.img.naturalHeight - this.hrHeight;
+
                 if (val > maxImgHeight) {
                     return maxImgHeight;
                 }
@@ -87,19 +88,19 @@
                 if (this.breaks.length > 1) {
                     // check break line before
                     if (this.currIndex > 0) {
-                        const maxTopVal = this.breaks[this.currIndex - 1].top;
+                        const maxTopVal = this.breaks[this.currIndex - 1].top + this.hrHeight + 10;
 
                         if (val < maxTopVal) {
-                            return maxTopVal + this.hrHeight;
+                            return maxTopVal;
                         }
                     }
 
                     // check break line after
                     if (this.currIndex <= this.breaks.length - 2){
-                        const maxBottomVal = this.breaks[this.currIndex + 1].top;
+                        const maxBottomVal = this.breaks[this.currIndex + 1].top - this.hrHeight - 10;
 
                         if (val > maxBottomVal) {
-                            return maxBottomVal - this.hrHeight;
+                            return maxBottomVal;
                         }
                     }
                 }
@@ -116,7 +117,10 @@
 
             removeLine(e, i) {
                 e.preventDefault();
-                this.$store.dispatch('removeChildren', {parentIndex: this.imgIndex, childIndex: i});
+                this.$store.dispatch('removeChild', {
+                    parentIndex: this.imgIndex,
+                    childIndex: i
+                });
             }
         }
     };
@@ -185,12 +189,25 @@
 
         &__hr {
             border: 0;
-            background-color: #000;
-            box-shadow: 0 0 0 #000;
-            transition: box-shadow .3s;
+
+            &::after {
+                content: '';
+                background-color: #000;
+                box-shadow: 0 0 0 #000;
+                height: 2px;
+                width: 100%;
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                transition: box-shadow .3s;
+            }
 
             &.active {
-                box-shadow: 0 0 6px #000;
+                &::after {
+                    box-shadow: 0 0 6px #000;
+                }
+
             }
 
             &:hover {

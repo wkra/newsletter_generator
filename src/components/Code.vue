@@ -11,7 +11,6 @@
       </v-flex>
       <v-flex xs12>
         <code>
-          {{header}}
           {{code}}
         </code>
       </v-flex>
@@ -23,8 +22,7 @@
 export default {
   name: "Code",
   props: {
-    code: String,
-    header: String
+    code: String
   },
   methods: {
     copyCode() {

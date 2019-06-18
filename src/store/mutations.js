@@ -5,14 +5,20 @@ const mutations = {
     addImgChildren(state, {img, index}) {
         state.imgs[index].children.push(img);
     },
-    removeChildren(state, {parentIndex, childIndex}) {
+    removeChild(state, {parentIndex, childIndex}) {
         state.imgs[parentIndex].children.splice(childIndex, 1);
     },
     changeChildrenImgTop(state, {parentIndex, childIndex, top}) {
         state.imgs[parentIndex].children[childIndex].top = top;
     },
+    changeChildrenImgHeight(state, {parentIndex, childIndex, height}) {
+        state.imgs[parentIndex].children[childIndex].height = height;
+    },
     setImgHeight(state, {index, height}) {
         state.imgs[index].height = height;
+    },
+    setImgNaturalHeight(state, {index, height}) {
+        state.imgs[index].naturalHeight = height;
     },
     removeImg(state, index) {
         state.imgs.splice(index, 1);
