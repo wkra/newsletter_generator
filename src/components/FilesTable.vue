@@ -122,7 +122,7 @@ export default {
       if (this.items) {
         return this.items.length < 2;
       }
-        return true
+        return true;
     }
   },
   methods: {
@@ -140,13 +140,11 @@ export default {
       }
       this.$store.dispatch('moveImg', { currIndex, newIndex});
       this.$store.dispatch('setSnack', {text: `${name} moved`, color: this.getSnackColor(currIndex, newIndex)});
-      this.$emit("updateCode");
     },
     getSnackColor(currIndex, newIndex) {
       return newIndex > currIndex ? "info" : "success";
     },
     save() {
-      this.$emit("updateCode");
       this.$store.dispatch('setSnack', {text: "Saved.", color: "success"});
     },
     cancel() {

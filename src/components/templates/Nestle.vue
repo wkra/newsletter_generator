@@ -9,7 +9,7 @@
           <table width="600" border="0" cellpadding="0" cellspacing="0" align="center">
             <tr v-for="(img, index) in imgs" :key="index">
               <td width="600" :height="img.naturalHeight">
-                <Additional :img="img"
+                <Additional
                 :imgIndex="index"/>
                 <a :href="img.url" target="_blank" style="outline: 0;">
                   <img
@@ -52,6 +52,7 @@ export default {
       name: "Nestle",
       description: "Images 600px width, in the same folder as index.html.",
       imagesLocation: "",
+      additionalImg: '',
       code: {
         top: `<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
                 <html>
@@ -91,6 +92,8 @@ export default {
       templateHeader: this.templateHeader,
       name: this.name,
       description: this.description,
+      imagesLocation: this.imagesLocation,
+      additionalImgs: this.additionalImg,
       code: this.code
     });
   }

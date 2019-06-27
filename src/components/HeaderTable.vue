@@ -22,6 +22,9 @@
         <v-btn :disabled="imgsLength < 1" @click="copyCode" class="white--text" color="red">
           <v-icon left>file_copy</v-icon>Copy Code
         </v-btn>
+        <v-btn :disabled="imgsLength < 1" @click="getFiles" class="white--text" color="purple">
+          <v-icon left>get_app</v-icon>Get files
+        </v-btn>
         <input
           type="file"
           style="display: none"
@@ -36,6 +39,8 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
+
 export default {
   name: "HeaderTable",
   props: {
@@ -43,9 +48,9 @@ export default {
     templates: Array
   },
   computed: {
-    selectedTemplateIndex() {
-      return this.$store.getters.selectedTemplateIndex;
-    }
+    ...mapGetters([
+      'selectedTemplateIndex'
+    ])
   },
   methods: {
     pickFile() {
@@ -60,6 +65,9 @@ export default {
     selectChange(e){
       this.$store.dispatch('setSelectedTemplateIndex', e.index);
       this.$store.dispatch('setSnack', {text: "Template Changed.", color: "info"});
+    },
+    getFiles(){
+      this.$emit("getFiles");
     }
   }
 };

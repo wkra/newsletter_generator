@@ -23,6 +23,8 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
+
     export default {
         name: "Additional",
         data() {
@@ -37,9 +39,9 @@
             imgIndex: Number
         },
         computed: {
-            imgs() {
-                return this.$store.getters.imgs;
-            },
+            ...mapGetters([
+                'imgs'
+            ]),
             img (){
                 return this.imgs[this.imgIndex];
             },
@@ -159,7 +161,7 @@
                 top: 0;
                 right: 0;
                 opacity: 0;
-                box-shadow: inset 0 0 30px 0px #000;
+                box-shadow: inset 0 0 30px 0 #000;
                 transition: all 0.5s;
             }
 
