@@ -9,11 +9,6 @@ const actions = {
         commit('setNewId', state.id += 1);
     },
 
-    setHeight({commit}, {index, height}) {
-        commit("setImgHeight", {index, height});
-        commit("setImgNaturalHeight", {index, height});
-    },
-
     removeImg({commit}, index) {
         commit("removeImg", index);
     },
@@ -85,11 +80,11 @@ const actions = {
         const currImg = state.imgs[index],
             childrenLength = currImg.children.length,
             img = methods.copyObject(currImg, ['children']),
-            lineHeight = 20;
+            lineHeight = state.breakLineHeight;
 
         if (childrenLength > 0 && (currImg.children[currImg.children.length - 1].top > currImg.naturalHeight - (lineHeight * 1.5))) {
             dispatch('showSnack', {
-                text: 'You can not add another line. The lowest line is too low.',
+                text: 'You can not add another line. The lowest one is too low.',
                 color: 'error'
             });
             return;

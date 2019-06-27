@@ -8,6 +8,7 @@ const state = {
         color: '',
         timer: ''
     },
+    breakLineHeight: 15,
     id: 1,
     sortDirection: false
 };

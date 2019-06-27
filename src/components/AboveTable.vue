@@ -22,7 +22,7 @@
         <v-btn :disabled="imgsLength < 1" @click="copyCode" class="white--text" color="red">
           <v-icon left>file_copy</v-icon>Copy Code
         </v-btn>
-        <v-btn :disabled="imgsLength < 1" @click="getFiles" class="white--text" color="purple">
+        <v-btn :disabled="imgsLength < 1" @click="getFiles" class="white--text" color="orange">
           <v-icon left>get_app</v-icon>Get files
         </v-btn>
         <input
@@ -42,7 +42,7 @@
   import { mapGetters } from 'vuex';
 
 export default {
-  name: "HeaderTable",
+  name: "AboveTable",
   props: {
     imgsLength: Number,
     templates: Array

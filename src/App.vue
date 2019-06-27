@@ -3,7 +3,7 @@
         <v-app>
             <Toolbar/>
             <v-content>
-                <HeaderTable
+                <AboveTable
                         v-if="templates.length"
                         :imgsLength="imgs.length"
                         :templates="templates"
@@ -14,7 +14,7 @@
                 <FilesTable
                         :items="tableItems"
                 ></FilesTable>
-                <FooterTable :disableBtn="imgs.length < 2" @sortImgs="sortImgs"/>
+                <UnderTable :disableBtn="imgs.length < 2" @sortImgs="sortImgs"/>
             </v-content>
             <v-container v-show="showTemplate">
                 <NewsletterView
@@ -41,9 +41,9 @@
     import axios from 'axios';
     import Toolbar from "./components/Toolbar.vue";
     import Code from "./components/Code.vue";
-    import HeaderTable from "./components/HeaderTable.vue";
+    import AboveTable from "./components/AboveTable.vue";
     import FilesTable from "./components/FilesTable.vue";
-    import FooterTable from "./components/FooterTable.vue";
+    import UnderTable from "./components/UnderTable.vue";
     import NewsletterView from "./components/NewsletterView.vue";
     import CopyTextarea from "./components/CopyTextarea.vue";
 
@@ -52,9 +52,9 @@
         components: {
             Toolbar,
             Code,
-            HeaderTable,
+            AboveTable,
             FilesTable,
-            FooterTable,
+            UnderTable,
             NewsletterView,
             CopyTextarea
         },
@@ -153,11 +153,17 @@
                     imgData.id = this.id;
                     imgData.file = files[i];
 
+                    this.setFileHeight(img, imgData);
+                }
+            },
+            setFileHeight(img, imgData) {
+                img.onload = () => {
+                    imgData.height = img.naturalHeight;
+                    imgData.naturalHeight = img.naturalHeight;
+
                     this.$store.dispatch('setNewId');
                     this.$store.dispatch('addImg', imgData);
-
-                    this.getFileHeight(img, this.imgs.length - 1);
-                }
+                };
             },
             getImgsFiles() {
                 let postData = {
@@ -181,16 +187,17 @@
                 ).then(() => {
                     this.$store.dispatch('setSnack', {
                         text: "success",
-                        color: "info"
+                        color: "orange"
                     });
                 })
                 .catch(() => {
                     this.$store.dispatch('setSnack', {
                         text: "failure",
-                        color: "info"
+                        color: "red"
                     });
                 });
             },
+
             getImg() {
                 return {
                     name: '',
@@ -202,16 +209,6 @@
                     children: [],
                     parent: -1
                 }
-            },
-            getFileHeight(img, index) {
-                img.onload = (() => {
-
-                    this.$store.dispatch('setHeight', {
-                        index: index,
-                        height: img.naturalHeight,
-                        naturalHeight: img.naturalHeight
-                    });
-                }).bind(this);
             },
             sortImgs() {
                 this.$store.dispatch('sortImgs');

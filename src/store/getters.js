@@ -13,6 +13,9 @@ const getters = {
     },
     id(state) {
         return state.id;
+    },
+    breakLineHeight(state){
+        return state.breakLineHeight;
     }
 };
 

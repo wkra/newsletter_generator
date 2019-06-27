@@ -1,5 +1,5 @@
 <template>
-    <div class="additional__wrapper">
+    <div class="additional__wrapper" @click="imgClick">
         <v-btn :class="{'additional__btn--in-active': active}" outline small fab class="additional__btn"
                @click="addBreak" color="black">
             <v-icon>add_circle_outline</v-icon>
@@ -10,7 +10,7 @@
                  :key="index"
                  :style="{top: `${breakLine.top}px`}"
                  @mousedown="startMove($event, index)">
-                <div class="additional__hr" :style="{height: `${hrHeight}px`}"
+                <div class="additional__hr" :style="{height: `${breakLineHeight}px`}"
                      :class="{active: currIndex === index && active }">
                     <v-btn outline small fab class="additional__hr-remove" @click="removeLine($event, index)">
                         <v-icon>delete</v-icon>
@@ -31,8 +31,7 @@
             return {
                 mousePosition: 0,
                 currIndex: 0,
-                active: false,
-                hrHeight: 2
+                active: false
             }
         },
         props: {
@@ -40,7 +39,8 @@
         },
         computed: {
             ...mapGetters([
-                'imgs'
+                'imgs',
+                'breakLineHeight'
             ]),
             img (){
                 return this.imgs[this.imgIndex];
@@ -76,12 +76,12 @@
 
             validateVal(val) {
                 // check top of image
-                if (val < 1) {
-                    return 1;
+                if (val < this.breakLineHeight) {
+                    return this.breakLineHeight;
                 }
 
                 // check bottom of image
-                const maxImgHeight = this.img.naturalHeight - this.hrHeight;
+                const maxImgHeight = this.img.naturalHeight - this.breakLineHeight;
 
                 if (val > maxImgHeight) {
                     return maxImgHeight;
@@ -90,7 +90,7 @@
                 if (this.breaks.length > 1) {
                     // check break line before
                     if (this.currIndex > 0) {
-                        const maxTopVal = this.breaks[this.currIndex - 1].top + this.hrHeight + 10;
+                        const maxTopVal = this.breaks[this.currIndex - 1].top + this.breakLineHeight;
 
                         if (val < maxTopVal) {
                             return maxTopVal;
@@ -99,7 +99,7 @@
 
                     // check break line after
                     if (this.currIndex <= this.breaks.length - 2){
-                        const maxBottomVal = this.breaks[this.currIndex + 1].top - this.hrHeight - 10;
+                        const maxBottomVal = this.breaks[this.currIndex + 1].top - this.breakLineHeight;
 
                         if (val > maxBottomVal) {
                             return maxBottomVal;
@@ -123,6 +123,11 @@
                     parentIndex: this.imgIndex,
                     childIndex: i
                 });
+            },
+            imgClick(e) {
+                if (e.target.className === 'additional__wrapper') {
+                    // for link feature
+                }
             }
         }
     };
@@ -169,6 +174,8 @@
                 .additional {
                     &__btn {
                         opacity: 1;
+                        box-shadow: 0 0 10px #000;
+                        background-color: #f5f5f5;
                     }
                 }
 
@@ -186,11 +193,21 @@
         &__break {
             height: 12px;
             width: 100%;
-            z-index: 20;
+            z-index: 15;
         }
 
         &__hr {
             border: 0;
+
+            &::before {
+                content: '';
+                background-color: #000;
+                width: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                hegith: 2px;
+            }
 
             &::after {
                 content: '';
@@ -200,7 +217,7 @@
                 width: 100%;
                 position: absolute;
                 left: 0;
-                top: 50%;
+                top: 0;
                 transform: translateY(-50%);
                 transition: box-shadow .3s;
             }

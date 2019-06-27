@@ -287,29 +287,30 @@
         },
         data() {
             return {
-                name: "Superpharm",
-                description: 'images 600px width in folder "images/"',
-                templateHeader: "",
-                imagesLocation: "images/",
-                additionalImgs: [
-                    "korzysci_01.jpg",
-                    "korzysci_02.jpg",
-                    "korzysci_03.jpg",
-                    "korzysci_04.jpg",
-                    "korzysci_05.jpg",
-                    "mailing-stopka_01.jpg",
-                    "mailing-stopka_02.jpg",
-                    "mailing-stopka_03.jpg",
-                    "mailing-stopka_04.jpg",
-                    "mailing-stopka_05.jpg",
-                    "mailing-stopka_06.jpg",
-                    "mailing-stopka_07.jpg",
-                    "newsletter-600px_01.jpg",
-                    "newsletter-600px_02.jpg",
-                    "newsletter-600px_03.jpg",
-                    "newsletter-600px_04.jpg",
-                    "newsletter-600px_05.jpg"],
-                code: {
+                config: {
+                    templateHeader: '',
+                    name: 'Superpharm',
+                    description: 'images 600px width in folder "images/"',
+                    imagesLocation: 'images/',
+                    additionalImg: [
+                        "korzysci_01.jpg",
+                        "korzysci_02.jpg",
+                        "korzysci_03.jpg",
+                        "korzysci_04.jpg",
+                        "korzysci_05.jpg",
+                        "mailing-stopka_01.jpg",
+                        "mailing-stopka_02.jpg",
+                        "mailing-stopka_03.jpg",
+                        "mailing-stopka_04.jpg",
+                        "mailing-stopka_05.jpg",
+                        "mailing-stopka_06.jpg",
+                        "mailing-stopka_07.jpg",
+                        "newsletter-600px_01.jpg",
+                        "newsletter-600px_02.jpg",
+                        "newsletter-600px_03.jpg",
+                        "newsletter-600px_04.jpg",
+                        "newsletter-600px_05.jpg"],
+                    code: {
                     top: `<html>
           <head>
           <meta charset="utf-8">
@@ -364,14 +365,14 @@
           </tr>
           </table>
           <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">`,
-                    loop: `<tr>
+                        loop: `<tr>
           <td>
           <a href="%href%" target="_blank" style="outline: 0;">
           <img src="images/%src%" width="600" height="%href%" border="0" alt="%alt%" style="display: block; line-height: 50%;">
           </a>
           </td>
           </tr>`,
-                    bottom: `</table>
+                        bottom: `</table>
           <table id="Tabela_06" width="600" border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
           <tr>
           <td width="129" height="100">
@@ -468,18 +469,12 @@
           </table>
           </body>
           </html>`
-                }
-            };
+                    }
+                },
+            }
         },
         created() {
-            this.$store.dispatch('addTemplate', {
-                templateHeader: this.templateHeader,
-                name: this.name,
-                description: this.description,
-                imagesLocation: this.imagesLocation,
-                additionalImg: this.additionalImg,
-                code: this.code
-            });
+            this.$store.dispatch('addTemplate', this.config);
         }
     };
 </script>

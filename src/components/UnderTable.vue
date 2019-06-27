@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "FooterTable",
+  name: "UnderTable",
   props: {
     disableBtn: Boolean
   },

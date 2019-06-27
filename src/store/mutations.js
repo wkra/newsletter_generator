@@ -27,19 +27,22 @@ const mutations = {
         state.imgs = imgs;
     },
     moveImg(state, {currIndex, newIndex}) {
-        const arr = state.imgs;
-        arr.splice(newIndex, 0, arr.splice(currIndex, 1)[0]);
+        const stateImgs = state.imgs;
+        stateImgs.splice(newIndex, 0, stateImgs.splice(currIndex, 1)[0]);
     },
     showSnack(state) {
-        window.clearTimeout(state.snack.timer);
-        state.snack.show = true;
-        state.snack.timer = window.setTimeout(() => {
-            state.snack.show = false;
+        const snack = state.snack;
+        window.clearTimeout(snack.timer);
+        snack.show = true;
+        snack.timer = window.setTimeout(() => {
+            snack.show = false;
         }, 3000);
     },
     closeSnack(state) {
-        window.clearTimeout(state.snack.timer);
-        state.snack.show = false;
+        const snack = state.snack;
+
+        window.clearTimeout(snack.timer);
+        snack.show = false;
     },
     snackText(state, text) {
         state.snack.text = text;
@@ -51,8 +54,10 @@ const mutations = {
         state.sortDirection = !state.sortDirection;
     },
     addTemplate(state, template) {
-        template.index = state.templates.length;
-        state.templates.push(template);
+        const templates = state.templates;
+
+        template.index = templates.length;
+        templates.push(template);
     },
     setSelectedTemplateIndex(state, index) {
         state.selectedTemplateIndex = index;
