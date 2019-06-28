@@ -126,7 +126,33 @@
             },
             imgClick(e) {
                 if (e.target.className === 'additional__wrapper') {
-                    // for link feature
+                    const top = e.layerY,
+                        currImg = this.img,
+                        urlReg = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+                    let url;
+
+                    if (currImg.children.length === 0) {
+                        url = currImg.url;
+                    } else {
+                        currImg.children.some((el, index, arr) => {
+                            if (index === 0 && top < el.top) {
+                                url = currImg.url;
+                                return true;
+                            }
+                            if (index === arr.length -1 || top > el.top && top < arr[index + 1].top) {
+                                url = el.url;
+                                return true;
+                            }
+                        })
+                    }
+                    if (urlReg.test(url)) {
+                        window.open(url);
+                    } else {
+                        this.$store.dispatch('setSnack', {
+                            text: `${url} url has the wrong format. Please correct and try again. `,
+                            color: "error"
+                        });
+                    }
                 }
             }
         }
