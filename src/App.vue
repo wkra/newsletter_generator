@@ -220,7 +220,7 @@
             copyCode() {
                 this.initCopy = true;
                 this.$store.dispatch('setSnack', {
-                    text: "Copied to clipboard.",
+                    text: "Code copied to clipboard.",
                     color: "error"
                 });
             },

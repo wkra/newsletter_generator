@@ -1,5 +1,5 @@
 <template>
-    <div class="additional__wrapper" @click="imgClick">
+    <div class="additional__wrapper" @mousedown="imgClick">
         <v-btn :class="{'additional__btn--in-active': active}" outline small fab class="additional__btn"
                @click="addBreak" color="black">
             <v-icon>add_circle_outline</v-icon>
