@@ -37,7 +37,7 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
+    import {mapGetters} from 'vuex';
     import axios from 'axios';
     import Toolbar from "./components/Toolbar.vue";
     import Code from "./components/Code.vue";
@@ -166,36 +166,51 @@
                 };
             },
             getImgsFiles() {
-                let postData = {
-                    files: new FormData(),
+                let imgsData = {
                     imgsObj: this.imgs,
                     imagesLocation: this.selectedTemplate.imagesLocation,
                     additionalImgs: this.selectedTemplate.additionalImgs,
                     code: this.newsletterCode
                 };
 
+                let imgFiles = new FormData();
+
                 this.imgs.forEach(function (img, i) {
-                    postData.files.append('files[' + i + ']', img.file);
+                    imgFiles.append('files[' + i + ']', img.file);
                 });
 
-                axios.post('#',
-                    postData, {
+                axios.post('upload_imgs_url',
+                    imgFiles, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }
                     }
-                ).then(() => {
-                    this.$store.dispatch('setSnack', {
-                        text: "success",
-                        color: "orange"
+                )
+                    .then((res) => {
+                        imgsData.response = res;
+
+                        axios.post('upload_data_url',
+                            imgsData
+                        )
+                            .then(() => {
+                                this.$store.dispatch('setSnack', {
+                                    text: "success",
+                                    color: "orange"
+                                });
+                            })
+                            .catch(() => {
+                                this.$store.dispatch('setSnack', {
+                                    text: "failure",
+                                    color: "red"
+                                });
+                            });
+                    })
+                    .catch(() => {
+                        this.$store.dispatch('setSnack', {
+                            text: "failure",
+                            color: "red"
+                        });
                     });
-                })
-                .catch(() => {
-                    this.$store.dispatch('setSnack', {
-                        text: "failure",
-                        color: "red"
-                    });
-                });
             },
 
             getImg() {
