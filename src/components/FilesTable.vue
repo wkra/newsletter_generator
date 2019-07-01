@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-data-table :headers="headers" :items="items" class="elevation-1" hide-actions>
+    <v-data-table :headers="headers" :items="items" item-key="name" class="elevation-1" hide-actions>
       <template v-slot:items="props">
         <td class="text-xxs-left">{{ props.index + 1 }}</td>
         <td>{{ props.item.name }}</td>

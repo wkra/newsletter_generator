@@ -128,7 +128,7 @@
                 if (e.target.className === 'additional__wrapper') {
                     const top = e.layerY,
                         currImg = this.img,
-                        urlReg = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+                        urlReg = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g;
                     let url;
 
                     if (currImg.children.length === 0) {
